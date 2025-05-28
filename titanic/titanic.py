@@ -7,17 +7,21 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler , MinMaxScaler  , LabelEncoder
+
 # load the dataset and reading as csv file and cahnge to dataframe
+
 df_train = pd.read_csv('train.csv')
 df_file = pd.read_csv('test.csv')
 df = pd.DataFrame(df_train)
 df_test =pd.DataFrame(df_file)
 
 # first cleaning the data by convert to lowercase 
+
 df['Name'] = df['Name'].str.lower()
 df_test['Name'] = df_test['Name'].str.lower()
  
 # remove the special characters from the name column
+
 df['Name'] = df['Name'].str.replace(r'[^a-z\s]', '', regex=True)
 df_test['Name'] = df_test['Name'].str.replace(r'[^a-z\s]', '', regex=True)
 
@@ -49,5 +53,7 @@ print("the missing value for test file",df_test.columns.isnull().sum())
 
 # ecoding with manual label coding 
 df['Sex'] = df['Sex'].map({"female": 1, "male": 0})
+df_test['Sex'] = df_test['Sex'].map({"female": 1, "male": 0})
 print( df)
+print(df_test)
 

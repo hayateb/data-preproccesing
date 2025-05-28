@@ -9,30 +9,29 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler , MinMaxScaler  , LabelEncoder
 
 # load the dataset and reading as csv file and cahnge to dataframe
+def load_data():
+    # Load the training and test datasets
+    df_train = pd.read_csv('train.csv')
+    df_test = pd.read_csv('test.csv')
+    return df_train, df_test
+# cleaning the data
+def clean_data(df):
+      df['Name'] = df['Name'].str.lower() # convert names to lower case
+      df['Name'] = df['Name'].str.replace(r'[^a-z\s]', '', regex=True) # remove special characters
+      df['Age'] = df['Age'].fillna(df['Age'].mean()) # fill missing values in Age with mean
+      threshold = 0.5 * len(df)
+      df = df.dropna(thresh=threshold, axis = 1)
+      encode = LabelEncoder()
+      df['Sex'] = encode.fit_transform(df['Sex'])
+      return df
 
-df_train = pd.read_csv('train.csv')
-df_file = pd.read_csv('test.csv')
+
+df_train, df_test = load_data()
 df = pd.DataFrame(df_train)
-df_test =pd.DataFrame(df_file)
+df_test = pd.DataFrame(df_test)
 
-# first cleaning the data by convert to lowercase 
-
-df['Name'] = df['Name'].str.lower()
-df_test['Name'] = df_test['Name'].str.lower()
- 
-# remove the special characters from the name column
-
-df['Name'] = df['Name'].str.replace(r'[^a-z\s]', '', regex=True)
-df_test['Name'] = df_test['Name'].str.replace(r'[^a-z\s]', '', regex=True)
-
-# as this dataset in age cooumn there are missing value so for numerical value we
-# we use filling them with mean method  fro both files 
-df['Age'] = df['Age'].fillna(df['Age'].mean())
-df_test['Age'] = df_test['Age'].fillna(df_test['Age'].mean())
-
-# for missing more thatn 50 percent we remove the coloumn at all 
-threshold = 0.5 * len(df)
-df = df.dropna(thresh=threshold, axis = 1)
+df = clean_data(df)
+df_test = clean_data(df_test)
 
 colomns = df.columns.intersection(df_test.columns)
 df_test = df_test[colomns]
@@ -48,12 +47,6 @@ print("the missing value for test file",df_test.columns.isnull().sum())
 # # -6  , 66
 # df = df[~outliner]
 
-# after all the cleaning 
-
-
-# ecoding with manual label coding 
-df['Sex'] = df['Sex'].map({"female": 1, "male": 0})
-df_test['Sex'] = df_test['Sex'].map({"female": 1, "male": 0})
-print( df)
+print(df)
 print(df_test)
 

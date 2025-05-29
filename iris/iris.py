@@ -8,9 +8,9 @@ from  sklearn.preprocessing import LabelEncoder ,StandardScaler
 df = sns.load_dataset('iris', cache = True , data_home = None )
 
 
-encoder = LabelEncoder()
+# encoder = LabelEncoder()
 
-df['species'] = encoder.fit_transform(df['species'])
+df = pd.get_dummies(df, columns= ['species'])
 cols = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
 
 for col in cols:

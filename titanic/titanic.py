@@ -18,7 +18,7 @@ def load_data():
 def clean_data(df):
       df['Name'] = df['Name'].str.lower() # convert names to lower case
       df['Name'] = df['Name'].str.replace(r'[^a-z\s]', '', regex=True) # remove special characters
-      df['Age'] = df['Age'].fillna(df['Age'].mean()) # fill missing values in Age with mean
+      df['Age'] = df['Age'].fillna(df['Age'].median()) # fill missing values in Age with mean
       threshold = 0.5 * len(df)
       df = df.dropna(thresh=threshold, axis = 1)
       encode = LabelEncoder()
@@ -46,7 +46,6 @@ print("the missing value for test file",df_test.columns.isnull().sum())
 # outliner = (df['Age'] < (q1 - 1.5 * iqr)) | (df['Age'] > (q3 + 1.5 * iqr))
 # # -6  , 66
 # df = df[~outliner]
-
 print(df)
-print(df_test)
+
 

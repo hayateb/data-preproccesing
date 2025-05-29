@@ -16,6 +16,7 @@ def load_data():
     return df_train, df_test
 # cleaning the data
 def clean_data(df):
+      df= df.copy()  # create a copy of the dataframe to avoid modifying the original
       df['Name'] = df['Name'].str.lower() # convert names to lower case
       df['Name'] = df['Name'].str.replace(r'[^a-z\s]', '', regex=True) # remove special characters
       df['Age'] = df['Age'].fillna(df['Age'].median()) # fill missing values in Age with mean
